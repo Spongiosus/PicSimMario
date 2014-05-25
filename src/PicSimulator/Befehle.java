@@ -406,7 +406,15 @@ public class Befehle {
 			
 			
 		case "BTFSC":
+			addressf = (byte2 & 0b01111111);
+			
+			if(isBitSetAt(Register.getValueAtAddress(addressf) ,((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7)))
+			{
+				
+			}
 			break;
+			
+			
 		case "BTFSS":
 			break;
 			
