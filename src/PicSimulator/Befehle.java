@@ -326,6 +326,8 @@ public class Befehle {
 
 			// Gerneral Interruption Enable
 			Register.setBitAtAddress(0x0B, 7);
+			
+			Register.PCL--; // TODO
 
 			Processor.zyklen++;
 			Processor.zyklen++;
@@ -334,6 +336,8 @@ public class Befehle {
 		case "RETURN":
 			Register.PCL = Register.stack.pop();
 
+			Register.PCL--; // TODO
+			
 			Processor.zyklen++;
 			Processor.zyklen++;
 			break;
@@ -487,13 +491,12 @@ public class Befehle {
 
 			if (isBitSetAt(Register.getValueAtAddress(addressf),
 					((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7))) {
+				Processor.zyklen++;
 				return;
 			} else {
 				Register.PCL++;
 				Processor.zyklen++;
 			}
-
-			Processor.zyklen++;
 			break;
 
 		case "BTFSS":
@@ -504,6 +507,7 @@ public class Befehle {
 				Register.PCL++;
 				Processor.zyklen++;
 			} else {
+				Processor.zyklen++;
 				return;
 			}
 
@@ -588,6 +592,8 @@ public class Befehle {
 			Register.PCL = Register.stack.pop();
 			Register.W_REGISTER = byte2;
 
+			Register.PCL--; // TODO
+			
 			Processor.zyklen++;
 			Processor.zyklen++;
 			break;

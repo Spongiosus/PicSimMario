@@ -31,6 +31,13 @@ public class Register {
 		EECON1 = 0;
 		EECON2 = 0;
 		stack.clear();
+		Processor.zyklen = 0;
+		
+		for(int i = 0; i<= 35; i++)
+		{
+			GPR[i] = 0;
+		}
+		
 	}
 
 	static void allOtherReset() {
