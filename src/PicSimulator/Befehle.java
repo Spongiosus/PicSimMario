@@ -207,6 +207,22 @@ public class Befehle {
 			
 			
 		case "DECFSZ":
+			addressf = (byte2 & 0b01111111);
+			valuef = Register.getValueAtAddress(addressf);
+			
+			if(valuef == 0)
+				result = 0xFF;
+			else
+				result = valuef--;		
+			
+			if(result == 0)
+				Register.PCL++;
+			
+			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
+			if(isBitSetAt(byte2, 7))
+				Register.setValueAtAddress(addressf, (result & 0b011111111));
+			else
+				Register.W_REGISTER = (result & 0b011111111);	
 			break;
 			
 			
@@ -230,6 +246,21 @@ public class Befehle {
 			
 			
 		case "INCFSZ":
+			addressf = (byte2 & 0b01111111);
+			valuef = Register.getValueAtAddress(addressf);
+			if(valuef == 0xFF)
+				result = 0;
+			else
+				result = valuef++;
+
+			if(result == 0)
+				Register.PCL++;
+			
+			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
+			if(isBitSetAt(byte2, 7))
+				Register.setValueAtAddress(addressf, (result & 0b011111111));
+			else
+				Register.W_REGISTER = (result & 0b011111111);	
 			break;
 			
 			
@@ -284,10 +315,15 @@ public class Befehle {
 			
 			
 		case "RETFIE":
+			Register.PCL = Register.stack.pop();
+			
+			// Gerneral Interruption Enable
+			Register.setBitAtAddress(0x0B, 7);
 			break;
 			
 			
 		case "RETURN":
+			Register.PCL = Register.stack.pop();
 			break;
 			
 			
@@ -410,12 +446,26 @@ public class Befehle {
 			
 			if(isBitSetAt(Register.getValueAtAddress(addressf) ,((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7)))
 			{
-				
+				return;
+			}
+			else
+			{
+				Register.PCL++;
 			}
 			break;
 			
 			
 		case "BTFSS":
+			addressf = (byte2 & 0b01111111);
+			
+			if(isBitSetAt(Register.getValueAtAddress(addressf) ,((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7)))
+			{
+				Register.PCL++;
+			}
+			else
+			{
+				return;
+			}
 			break;
 			
 		// --------------- Literal/Sprungbefehle --------------- //
@@ -470,7 +520,11 @@ public class Befehle {
 			
 			
 		case "RETLW":
+			Register.PCL = Register.stack.pop();
+			Register.W_REGISTER = byte2;
 			break;
+			
+			
 		case "SUBLW":		
 			result = byte2 + (((~Register.W_REGISTER) + 1) & 0xFF);
 			

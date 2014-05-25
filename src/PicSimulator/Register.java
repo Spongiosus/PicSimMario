@@ -101,22 +101,48 @@ public class Register {
 	}
 	
 	static void setBitAtAddress(int address, int bit)
-	{
+	{		
+		
+		if((address >= 0x0C) && (address <= 0x2F))
+		{
+		// GPR
+		GPR[address - 0x0C] = GPR[address - 0x0C] | (1 << bit);
+		}
+		if ((address >= 0x8C) && (address <= 0xAF))
+		{
+		//GPR
+		GPR[address - 0x8C] = GPR[address - 0x8C] | (1 << bit);
+		}
+		if((address == 0x00) || (address == 0x80))
+			INDF = INDF | (1 << bit);
+		if(address == 0x01)
+			TMR0 = TMR0 | (1 << bit);
+		if((address == 0x02) || (address == 0x82))
+			PCL = PCL | (1 << bit);
 		if((address == 0x03) || (address == 0x83))
-			STATUS = (STATUS | (1 << bit));
-		if(address == 0x05)
-			PORTA = (PORTA | (1 << bit));
+			STATUS = STATUS | (1 << bit);
+		if((address == 0x04) || (address == 0x84))
+			FSR = FSR | (1 << bit);
 		if(address == 0x85)
-			TRISA = (TRISA | (1 << bit));
-		if(address == 0x06)
-			PORTB = (PORTB | (1 << bit));
+			TRISA = TRISA | (1 << bit);
 		if(address == 0x86)
-			TRISB = (TRISB | (1 << bit));
-		if(address == 0x0A)
-			PCLATH = (PCLATH | (1 << bit));
-		if(address == 0x0B)
-			INTCON = (INTCON | (1 << bit));
-		//TODO Wo muss man alles bits setzen können ?
+			TRISB = TRISB | (1 << bit);
+				
+		// Unimplemented
+		if((address == 0x07) || (address == 0x87))
+			return;
+		if(address == 0x08)
+			EEDATA = EEDATA | (1 << bit);
+		if(address == 0x09)
+			EEADR = EEADR | (1 << bit);
+		if(address == 0x89)
+			EECON2 = EECON2 | (1 << bit);
+		
+		// Unimplemented
+		if((address <= 0x30) || (address >= 0x7F))
+			return;
+		if((address <= 0xB0) || (address >= 0xFF))
+			return;
 	}
 	
 	static void clearBitAtAddress(int address, int bit)
@@ -149,21 +175,47 @@ public class Register {
 			maske = 0b01111111;
 			break;
 		}
+		
+		if((address >= 0x0C) && (address <= 0x2F))
+		{
+		// GPR
+		GPR[address - 0x0C] = GPR[address - 0x0C] & maske;
+		}
+		if ((address >= 0x8C) && (address <= 0xAF))
+		{
+		//GPR
+		GPR[address - 0x8C] = GPR[address - 0x8C] & maske;
+		}
+		if((address == 0x00) || (address == 0x80))
+			INDF = INDF & maske;
+		if(address == 0x01)
+			TMR0 = TMR0 & maske;
+		if((address == 0x02) || (address == 0x82))
+			PCL = PCL & maske;
 		if((address == 0x03) || (address == 0x83))
-			STATUS = (STATUS & maske);
-		if(address == 0x05)
-			PORTA = (PORTA & maske);
+			STATUS = STATUS & maske;
+		if((address == 0x04) || (address == 0x84))
+			FSR = FSR & maske;
 		if(address == 0x85)
-			TRISA = (TRISA & maske);
-		if(address == 0x06)
-			PORTB = (PORTB & maske);
+			TRISA = TRISA & maske;
 		if(address == 0x86)
-			TRISB = (TRISB & maske);
-		if(address == 0x0A)
-			PCLATH = (PCLATH & maske);
-		if(address == 0x0B)
-			INTCON = (INTCON & maske);
-		//TODO Wo muss man alles bits clearen können ?
+			TRISB = TRISB & maske;
+				
+		// Unimplemented
+		if((address == 0x07) || (address == 0x87))
+			return;
+		if(address == 0x08)
+			EEDATA = EEDATA & maske;
+		if(address == 0x09)
+			EEADR = EEADR & maske;
+		if(address == 0x89)
+			EECON2 = EECON2 & maske;
+		
+		// Unimplemented
+		if((address <= 0x30) || (address >= 0x7F))
+			return;
+		if((address <= 0xB0) || (address >= 0xFF))
+			return;
 	}
 	
 	static void setValueAtAddress(int address, int value)
