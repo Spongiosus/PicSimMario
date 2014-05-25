@@ -498,11 +498,13 @@ public class Befehle {
 			
 		case "CALL":
 			Register.stack.push(Register.PCL + 1);
-			Register.PCL = byte2;
+			// Nach jedem Befehl wird der PCL erhöht (bei CALL nicht notwendig)
+			Register.PCL = byte2 - 1;
 			Register.PCLATH = (byte1 & 0b111);
 			break;
 		case "GOTO":
-			Register.PCL = byte2;
+			// Nach jedem Befehl wird der PCL erhöht (bei GOTO nicht notwendig)
+			Register.PCL = byte2 - 1;
 			Register.PCLATH = (byte1 & 0b111);
 			break;
 		case "IORLW":

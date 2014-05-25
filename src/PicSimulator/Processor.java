@@ -29,7 +29,7 @@ public class Processor implements Runnable
 	{
 		if(!Parser.isLoaded())
 			return;
-		
+
 		isRunning = true;
 
 		while (isRunning && Parser.befehlszeilen[Register.PCL] != null)
