@@ -447,26 +447,26 @@ public class GUI extends JFrame
         sfrTable.setValueAt(toBinary(Register.PORTA), 5, 1);
     	sfrTable.setValueAt("PORTB", 6, 0);
         sfrTable.setValueAt(toBinary(Register.PORTB), 6, 1);
-    	sfrTable.setValueAt("EEDATA", 8, 0);
-        sfrTable.setValueAt(toBinary(Register.EEDATA), 8, 1);
-    	sfrTable.setValueAt("EEADR", 9, 0);
-        sfrTable.setValueAt(toBinary(Register.EEADR), 9, 1);
-    	sfrTable.setValueAt("PCLATH", 10, 0);
-        sfrTable.setValueAt(toBinary(Register.PCLATH), 10, 1);
-    	sfrTable.setValueAt("INTCON", 11, 0);
-        sfrTable.setValueAt(toBinary(Register.INTCON), 11, 1);
-    	sfrTable.setValueAt("INDF", 12, 0);
-        sfrTable.setValueAt(toBinary(Register.INDF), 12, 1);
-    	sfrTable.setValueAt("OPTION_REG", 13, 0);
-        sfrTable.setValueAt(toBinary(Register.OPTION_REG), 13, 1);
-    	sfrTable.setValueAt("TRISA", 14, 0);
-        sfrTable.setValueAt(toBinary(Register.TRISA), 14, 1);
-    	sfrTable.setValueAt("TRISB", 15, 0);
-        sfrTable.setValueAt(toBinary(Register.TRISB), 15, 1);
-    	sfrTable.setValueAt("EECON1", 16, 0);
-        sfrTable.setValueAt(toBinary(Register.EECON1), 16, 1);
-    	sfrTable.setValueAt("EECON2", 17, 0);
-        sfrTable.setValueAt(toBinary(Register.EECON2), 17, 1);
+    	sfrTable.setValueAt("EEDATA", 7, 0);
+        sfrTable.setValueAt(toBinary(Register.EEDATA), 7, 1);
+    	sfrTable.setValueAt("EEADR", 8, 0);
+        sfrTable.setValueAt(toBinary(Register.EEADR), 8, 1);
+    	sfrTable.setValueAt("PCLATH", 9, 0);
+        sfrTable.setValueAt(toBinary(Register.PCLATH), 9, 1);
+    	sfrTable.setValueAt("INTCON", 10, 0);
+        sfrTable.setValueAt(toBinary(Register.INTCON), 10, 1);
+    	sfrTable.setValueAt("INDF", 11, 0);
+        sfrTable.setValueAt(toBinary(Register.INDF), 11, 1);
+    	sfrTable.setValueAt("OPTION_REG", 12, 0);
+        sfrTable.setValueAt(toBinary(Register.OPTION_REG), 12, 1);
+    	sfrTable.setValueAt("TRISA", 13, 0);
+        sfrTable.setValueAt(toBinary(Register.TRISA), 13, 1);
+    	sfrTable.setValueAt("TRISB", 14, 0);
+        sfrTable.setValueAt(toBinary(Register.TRISB), 14, 1);
+    	sfrTable.setValueAt("EECON1", 15, 0);
+        sfrTable.setValueAt(toBinary(Register.EECON1), 15, 1);
+    	sfrTable.setValueAt("EECON2", 16, 0);
+        sfrTable.setValueAt(toBinary(Register.EECON2), 16, 1);
     }
 
     private void repaintProgram()
