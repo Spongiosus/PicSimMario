@@ -1,12 +1,10 @@
 package PicSimulator;
 
 public class Befehle {
-	
+
 	// stelle => 0-7 !
-	public static boolean isBitSetAt (int myByte, int stelle)
-	{
-		switch(stelle)
-		{
+	public static boolean isBitSetAt(int myByte, int stelle) {
+		switch (stelle) {
 		case 0:
 			return ((myByte & 1) != 0);
 		case 1:
@@ -27,498 +25,460 @@ public class Befehle {
 			return ((myByte & 0b10000000) != 0);
 		default:
 			return false;
-		}	
-	}	
+		}
+	}
 
-	
-	
-	public static void setCarryFlag()
-	{
+	public static void setCarryFlag() {
 		Register.setBitAtAddress(3, 0);
 	}
-	public static void setDigitCarryFlag()
-	{
+
+	public static void setDigitCarryFlag() {
 		Register.setBitAtAddress(3, 1);
 	}
-	public static void setZeroFlag()
-	{
+
+	public static void setZeroFlag() {
 		Register.setBitAtAddress(3, 2);
 	}
-	public static void setPDFlag()
-	{
+
+	public static void setPDFlag() {
 		Register.setBitAtAddress(3, 3);
 	}
-	public static void setTOFlag()
-	{
+
+	public static void setTOFlag() {
 		Register.setBitAtAddress(3, 4);
 	}
-	public static void setIRPFlag()
-	{
+
+	public static void setIRPFlag() {
 		Register.setBitAtAddress(3, 7);
 	}
-	
-	
-	public static void clearCarryFlag()
-	{
+
+	public static void clearCarryFlag() {
 		Register.clearBitAtAddress(3, 0);
 	}
-	public static void clearDigitCarryFlag()
-	{
+
+	public static void clearDigitCarryFlag() {
 		Register.clearBitAtAddress(3, 1);
 	}
-	public static void clearZeroFlag()
-	{
+
+	public static void clearZeroFlag() {
 		Register.clearBitAtAddress(3, 2);
 	}
-	public static void clearPDFlag()
-	{
+
+	public static void clearPDFlag() {
 		Register.clearBitAtAddress(3, 3);
 	}
-	public static void clearTOFlag()
-	{
+
+	public static void clearTOFlag() {
 		Register.clearBitAtAddress(3, 4);
 	}
-	public static void clearIRPFlag()
-	{
+
+	public static void clearIRPFlag() {
 		Register.clearBitAtAddress(3, 7);
 	}
 
-	
-	
-	
-	public static void fuehreBefehlAus (String befehl, int byte1, int byte2)
-	{
+	public static void fuehreBefehlAus(String befehl, int byte1, int byte2) {
 		int result = 0;
 		int addressf = 0;
 		int valuef = 0;
-		
-		switch(befehl)
-		{
+
+		switch (befehl) {
 		// --------------- Bytebefehle -------------- //
-		
-		
+
 		case "ADDWF":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			
+
 			result = Register.W_REGISTER + valuef;
 			// Auf C, DC, Z prüfen
-			if(result == 0)
+			if (result == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
-			
-			if(isBitSetAt(result, 8))
+
+			if (isBitSetAt(result, 8))
 				setCarryFlag();
 			else
 				clearCarryFlag();
-			
+
 			// DC
-			if((valuef & 0b00001111) + (Register.W_REGISTER & 0b00001111) > 15)
+			if ((valuef & 0b00001111) + (Register.W_REGISTER & 0b00001111) > 15)
 				setDigitCarryFlag();
 			else
 				clearDigitCarryFlag();
-			
+
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
-			if(isBitSetAt(byte2, 7))
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);	
+				Register.W_REGISTER = (result & 0b011111111);
 			break;
-			
-			
+
 		case "ANDWF":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			
+
 			result = Register.W_REGISTER & valuef;
 			// Auf Z prüfen
-			if(result == 0)
+			if (result == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
-			
+
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
-			if(isBitSetAt(byte2, 7))
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);	
+				Register.W_REGISTER = (result & 0b011111111);
 			break;
-			
-			
+
 		case "CLRF":
 			addressf = (byte2 & 0b01111111);
 			Register.setValueAtAddress(addressf, 0);
-			
+
 			setZeroFlag();
 			break;
-			
-			
+
 		case "CLRW":
 			Register.W_REGISTER = 0;
-			
+
 			setZeroFlag();
 			break;
-			
-			
+
 		case "COMF":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			
+
 			result = (~valuef) & 0xFF;
 			// Auf Z prüfen
-			if(result == 0)
+			if (result == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
-			
+
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
-			if(isBitSetAt(byte2, 7))
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);	
+				Register.W_REGISTER = (result & 0b011111111);
 			break;
-			
-			
+
 		case "DECF":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			
-			if(valuef == 0)
+
+			if (valuef == 0)
 				result = 0xFF;
 			else
 				result = (valuef - 1);
-			
+
 			// Z prüfen
-			if(result == 0)
+			if (result == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
-			
+
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
-			if(isBitSetAt(byte2, 7))
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);	
+				Register.W_REGISTER = (result & 0b011111111);
 			break;
-			
-			
+
 		case "DECFSZ":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			
-			if(valuef == 0)
+
+			if (valuef == 0)
 				result = 0xFF;
 			else
-				result = (valuef - 1);		
-			
-			if(result == 0)
+				result = (valuef - 1);
+
+			if (result == 0)
 				Register.PCL++;
-			
+
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
-			if(isBitSetAt(byte2, 7))
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);	
+				Register.W_REGISTER = (result & 0b011111111);
 			break;
-			
-			
+
 		case "INCF":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			if(valuef == 0xFF)
+			if (valuef == 0xFF)
 				result = 0;
 			else
 				result = (valuef + 1);
 			// Z prüfen
-			if(result == 0)
+			if (result == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
-			
+
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
-			if(isBitSetAt(byte2, 7))
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);	
+				Register.W_REGISTER = (result & 0b011111111);
 			break;
-			
-			
+
 		case "INCFSZ":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			if(valuef == 0xFF)
+			if (valuef == 0xFF)
 				result = 0;
 			else
 				result = (valuef + 1);
 
-			if(result == 0)
+			if (result == 0)
 				Register.PCL++;
-			
+
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
-			if(isBitSetAt(byte2, 7))
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);	
+				Register.W_REGISTER = (result & 0b011111111);
 			break;
-			
-			
+
 		case "IORWF":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			
+
 			result = Register.W_REGISTER | valuef;
 
 			// Z quer
-			if(result == 0)
+			if (result == 0)
 				clearZeroFlag();
 			else
 				setZeroFlag();
-			
+
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
-			if(isBitSetAt(byte2, 7))
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);	
+				Register.W_REGISTER = (result & 0b011111111);
 			break;
-			
-			
+
 		case "MOVF":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			
-			if(valuef == 0)
+
+			if (valuef == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
-						
-			if(isBitSetAt(byte2, 7))
+
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, valuef);
 			else
 				Register.W_REGISTER = valuef;
-			break;			
-			
-			
+			break;
+
 		case "MOVWF":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			
+
 			Register.setValueAtAddress(addressf, Register.W_REGISTER);
 			break;
-			
-			
+
 		case "NOP":
 			break;
-			
-			
+
 		case "CLRWDT":
 			break;
-			
-			
+
 		case "RETFIE":
 			Register.PCL = Register.stack.pop();
-			
+
 			// Gerneral Interruption Enable
 			Register.setBitAtAddress(0x0B, 7);
 			break;
-			
-			
+
 		case "RETURN":
 			Register.PCL = Register.stack.pop();
 			break;
-			
-			
+
 		case "SLEEP":
 			break;
-			
-			
+
 		case "RLF":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			
+
 			result = valuef << 1;
-			
-			if(isBitSetAt(Register.STATUS, 0))
+
+			if (isBitSetAt(Register.STATUS, 0))
 				result++;
-			
+
 			// Check Carry Flag
-			if(isBitSetAt(result, 8))
+			if (isBitSetAt(result, 8))
 				setCarryFlag();
 			else
 				clearCarryFlag();
-						
-			if(isBitSetAt(byte2, 7))
+
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, result & 0b011111111);
 			else
 				Register.W_REGISTER = result & 0b011111111;
-			break;	
-			
-			
+			break;
+
 		case "RRF":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			
+
 			boolean setFlag = false;
-			if(isBitSetAt(result, 0))
+			if (isBitSetAt(result, 0))
 				setFlag = true;
-			
+
 			result = valuef >> 1;
-			
-			if(isBitSetAt(Register.STATUS, 0))
+
+			if (isBitSetAt(Register.STATUS, 0))
 				result = result | 0x80;
-			if(setFlag)
+			if (setFlag)
 				setCarryFlag();
 			else
 				clearCarryFlag();
-						
-			if(isBitSetAt(byte2, 7))
+
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, result & 0b011111111);
 			else
 				Register.W_REGISTER = result & 0b011111111;
-			break;	
-			
-			
+			break;
+
 		case "SUBWF":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			
+
 			result = valuef + (((~Register.W_REGISTER) + 1) & 0xFF);
-			
+
 			// Auf C, DC, Z prüfen
-			if((result & 0b011111111) == 0)
+			if ((result & 0b011111111) == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
-			if(isBitSetAt(result, 8))
+			if (isBitSetAt(result, 8))
 				setCarryFlag();
 			else
 				clearCarryFlag();
-						
+
 			// DC
-			if((valuef & 0b00001111) + ( ~ (Register.W_REGISTER & 0b00001111) + 1) > 15)
+			if ((valuef & 0b00001111)
+					+ (~(Register.W_REGISTER & 0b00001111) + 1) > 15)
 				setDigitCarryFlag();
 			else
 				clearDigitCarryFlag();
-			
-			if(isBitSetAt(byte2, 7))
+
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, result & 0b011111111);
 			else
 				Register.W_REGISTER = result & 0b011111111;
-			break;			
-			
-			
+			break;
+
 		case "SWAPF":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			
+
 			result = ((valuef & 0b1111) << 4) + ((valuef & 0b11110000) >> 4);
-			
-			if(isBitSetAt(byte2, 7))
+
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, result & 0b011111111);
 			else
 				Register.W_REGISTER = result & 0b011111111;
 			break;
-			
-			
+
 		case "XORWF":
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
-			
+
 			result = Register.W_REGISTER ^ valuef;
 			// Auf Z prüfen
-			if(result == 0)
+			if (result == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
-			
+
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
-			if(isBitSetAt(byte2, 7))
+			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);		
+				Register.W_REGISTER = (result & 0b011111111);
 			break;
-			
-			
-		
+
 		// --------------- Bitbefehle -------------- //
-			
+
 		case "BCF":
 			addressf = (byte2 & 0b01111111);
-			// ersten 2 bit des ersten byte und das letzte bit des zweiten byte ergibt das zu löschende bit
-			Register.clearBitAtAddress(addressf, ((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7));
+			// ersten 2 bit des ersten byte und das letzte bit des zweiten byte
+			// ergibt das zu löschende bit
+			Register.clearBitAtAddress(addressf, ((byte1 & 0b11) << 1)
+					+ ((byte2 & 0b10000000) >> 7));
 			break;
-			
-			
+
 		case "BSF":
 			addressf = (byte2 & 0b01111111);
-			// ersten 2 bit des ersten byte und das letzte bit des zweiten byte ergibt das zu setzende bit
-			Register.setBitAtAddress(addressf, ((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7));
+			// ersten 2 bit des ersten byte und das letzte bit des zweiten byte
+			// ergibt das zu setzende bit
+			Register.setBitAtAddress(addressf, ((byte1 & 0b11) << 1)
+					+ ((byte2 & 0b10000000) >> 7));
 			break;
-			
-			
+
 		case "BTFSC":
 			addressf = (byte2 & 0b01111111);
-			
-			if(isBitSetAt(Register.getValueAtAddress(addressf) ,((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7)))
-			{
+
+			if (isBitSetAt(Register.getValueAtAddress(addressf),
+					((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7))) {
 				return;
-			}
-			else
-			{
+			} else {
 				Register.PCL++;
 			}
 			break;
-			
-			
+
 		case "BTFSS":
 			addressf = (byte2 & 0b01111111);
-			
-			if(isBitSetAt(Register.getValueAtAddress(addressf) ,((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7)))
-			{
+
+			if (isBitSetAt(Register.getValueAtAddress(addressf),
+					((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7))) {
 				Register.PCL++;
-			}
-			else
-			{
+			} else {
 				return;
 			}
 			break;
-			
+
 		// --------------- Literal/Sprungbefehle --------------- //
-			
+
 		case "ADDLW":
 			result = Register.W_REGISTER + byte2;
 			// Auf C, DC, Z prüfen
-			if(result == 0)
+			if (result == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
-			if(isBitSetAt(result, 8))
+			if (isBitSetAt(result, 8))
 				setCarryFlag();
 			else
 				clearCarryFlag();
-			
-			//DC
-			if((byte2 & 0b00001111) + (Register.W_REGISTER & 0b00001111) > 15)
+
+			// DC
+			if ((byte2 & 0b00001111) + (Register.W_REGISTER & 0b00001111) > 15)
 				setDigitCarryFlag();
 			else
 				clearDigitCarryFlag();
 
-				Register.W_REGISTER = (result & 0b011111111);			
+			Register.W_REGISTER = (result & 0b011111111);
 			break;
 
-			
 		case "ANDLW":
 			result = Register.W_REGISTER & byte2;
 			// Auf Z prüfen
-			if(result == 0)
+			if (result == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
 
-			Register.W_REGISTER = (result & 0b011111111);			
+			Register.W_REGISTER = (result & 0b011111111);
 			break;
-			
-			
+
 		case "CALL":
 			Register.stack.push(Register.PCL + 1);
 			// Nach jedem Befehl wird der PCL erhöht (bei CALL nicht notwendig)
@@ -532,65 +492,61 @@ public class Befehle {
 			break;
 		case "IORLW":
 			result = Register.W_REGISTER & byte2;
-			
-			if(result == 0)
+
+			if (result == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
 
-			Register.W_REGISTER = (result & 0b011111111);			
-			break;			
-			
-			
+			Register.W_REGISTER = (result & 0b011111111);
+			break;
+
 		case "MOVLW":
 			Register.W_REGISTER = byte2;
 			break;
-			
-			
+
 		case "RETLW":
 			Register.PCL = Register.stack.pop();
 			Register.W_REGISTER = byte2;
 			break;
-			
-			
-		case "SUBLW":		
+
+		case "SUBLW":
 			result = byte2 + (((~Register.W_REGISTER) + 1) & 0xFF);
-			
+
 			// Auf C, DC, Z prüfen
-			if((result & 0b011111111) == 0)
+			if ((result & 0b011111111) == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
-			if(isBitSetAt(result, 8))
+			if (isBitSetAt(result, 8))
 				setCarryFlag();
 			else
 				clearCarryFlag();
-						
+
 			// DC
-			if((valuef & 0b00001111) + ( ~ (Register.W_REGISTER & 0b00001111) + 1) > 15)
+			if ((valuef & 0b00001111)
+					+ (~(Register.W_REGISTER & 0b00001111) + 1) > 15)
 				setDigitCarryFlag();
 			else
 				clearDigitCarryFlag();
-			
+
 			Register.W_REGISTER = result & 0b011111111;
 			break;
-			
-			
+
 		case "XORLW":
 			result = Register.W_REGISTER ^ byte2;
 			// Auf Z prüfen
-			if(result == 0)
+			if (result == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
 
-			Register.W_REGISTER = (result & 0b011111111);			
+			Register.W_REGISTER = (result & 0b011111111);
 			break;
-			
 
 		}
 		Register.PCL++;
-		
+
 	}
 
 }
