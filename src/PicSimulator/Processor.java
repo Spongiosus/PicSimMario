@@ -2,6 +2,8 @@ package PicSimulator;
 
 public class Processor implements Runnable
 {
+	private static Processor instance;
+	
 	public static final int PWR_ON = 0;
 	public static final int SLEEP = 1;
 	public static final int WDT = 2;
@@ -19,6 +21,7 @@ public class Processor implements Runnable
 		if (dateiName != null)
 			Parser.ladeDatei(dateiName);
 		wdt = new Watchdog(this);
+		instance = this;
 	}
 
 	public Processor()
@@ -70,7 +73,10 @@ public class Processor implements Runnable
 	{
 		return isSleeping;
 	}
-
+	public static void setSleeping(boolean state)
+	{
+		instance.isSleeping = state;
+	}
 	public boolean isRunning()
 	{
 		return isRunning;
@@ -88,21 +94,21 @@ public class Processor implements Runnable
 		case PWR_ON:
 			Register.powerOnReset();
 			Parser.reset();
+			Processor.setSleeping(false);
 			break;
 
-		case WDT:/*
+		case WDT:
+			Register.allOtherReset();
 			Register.STATUS &= 0x7;
-			statusReg.setBit(3);
-			statusReg.clearBit(4);
-			pcl.set13BitValue((short) 0);
-			intconReg.reset();
-			optionReg.reset();
-			trisaReg.reset();
-			trisbReg.reset();
-			break;*/
+			Register.setBitAtAddress(3, 3);
+			Register.clearBitAtAddress(3, 4);
+			Register.PCLATH = 0;
+			Register.PCL = 0;
+			Processor.setSleeping(false);
+			break;
 		}
 	}
-
+	
 
 	public static void main(String[] args)
 	{

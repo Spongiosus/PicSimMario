@@ -1,7 +1,6 @@
 package PicSimulator;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FileDialog;
@@ -15,7 +14,6 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.util.Stack;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
@@ -32,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
 @SuppressWarnings("serial")
 public class GUI extends JFrame 
 {
-    private static final int    gpTableColCount = 8;
+    private static final int    gpTableColCount = 4;
     private static GUI instance;
     
     
@@ -40,6 +38,8 @@ public class GUI extends JFrame
     private Processor           myProcessor;
 
     private JPanel              mainPanel;
+    
+    private JPanel				gpPanel;
     private JTable              gpTable;
     private JTable              sfrTable;
 
@@ -48,7 +48,6 @@ public class GUI extends JFrame
     private JPanel              buttonPanel;
 
     private JPanel              programmPanel;
-    private JPanel              debugButtonPanel;
     private JTable              programmTable;
     private JScrollPane         scrollPane;
 
@@ -102,8 +101,14 @@ public class GUI extends JFrame
         btnReset = new JButton("Reset");
         btnHelp = new JButton("Hilfe");
         btnOpenProgram = new JButton("Öffnen");
-
+        btnStart = new JButton("Start");
+        btnStop = new JButton("Stop");
+        btnStep = new JButton("Schritt");
+        
         buttonPanel.add(btnOpenProgram);
+        buttonPanel.add(btnStart);
+        buttonPanel.add(btnStop);
+        buttonPanel.add(btnStep);
         buttonPanel.add(btnReset);
         buttonPanel.add(btnHelp);
 
@@ -131,15 +136,10 @@ public class GUI extends JFrame
         ioPanel.setMaximumSize(new Dimension(150, 175));
         upperPanel.add(ioPanel);
         
-        JPanel gpPanel = new JPanel();
-        gpPanel.add(new JLabel("General purpose registers"));
+        gpPanel = new JPanel();
 
         gpTable = new JTable(new DefaultTableModel(0x43 / gpTableColCount + 1, gpTableColCount));
         gpPanel.add(gpTable);
-        gpTable.setPreferredSize(new Dimension(300, 200));
-        gpTable.setMaximumSize(new Dimension(300, 200));
-        gpPanel.setPreferredSize(new Dimension(300, 200));
-        gpPanel.setMaximumSize(new Dimension(300, 200));
         upperPanel.add(gpPanel);
 
 
@@ -160,19 +160,20 @@ public class GUI extends JFrame
         
         runtimePanel = new JPanel();
         runtimePanel.setLayout(new GridLayout(2, 3, 5, 5));
-        runtimePanel.setBorder(BorderFactory.createLineBorder(Color.black));
+        runtimePanel.setPreferredSize(new Dimension(200,100));
 
         quarzTextField = new JFormattedTextField(new DecimalFormat("####.########"));
         quarzTextField.setHorizontalAlignment(JTextField.RIGHT);
-        btnApply = new JButton("Übernehmen");
+        btnApply = new JButton("OK");
 
         runtimeLabel = new JLabel();
         cycleLabel = new JLabel();
 
         runtimePanel.add(runtimeLabel);
+        runtimePanel.add(cycleLabel);
+        runtimePanel.add(new JLabel());
         runtimePanel.add(quarzTextField);
         runtimePanel.add(new JLabel("MHz"));
-        runtimePanel.add(cycleLabel);
         runtimePanel.add(btnApply);
         rightPanel.add(runtimePanel);
 
@@ -204,23 +205,15 @@ public class GUI extends JFrame
         programmPanel = new JPanel();
         programmPanel.setLayout(new BorderLayout());
 
-        debugButtonPanel = new JPanel();
-        debugButtonPanel.setLayout(new GridLayout(3, 1));
 
-        btnStart = new JButton("Start");
-        btnStop = new JButton("Stop");
-        btnStep = new JButton("Schritt");
 
-        debugButtonPanel.add(btnStart);
-        debugButtonPanel.add(btnStop);
-        debugButtonPanel.add(btnStep);
+
         
         programmTable = new JTable(new DefaultTableModel(10, 2));
         scrollPane = new JScrollPane(programmTable);
         programmPanel.setPreferredSize(new Dimension(contentPanel.getWidth(), 200));
         programmPanel.setMinimumSize(new Dimension(contentPanel.getWidth(), 200));
 
-        programmPanel.add(debugButtonPanel, BorderLayout.EAST);
         programmPanel.add(scrollPane, BorderLayout.CENTER);
         contentPanel.add(programmPanel, BorderLayout.SOUTH);
     }
@@ -352,6 +345,10 @@ public class GUI extends JFrame
 
     private void initGPTable()
     {
+        gpTable.setPreferredSize(new Dimension(150, 300));
+        gpTable.setMaximumSize(new Dimension(150, 300));
+        gpPanel.setPreferredSize(new Dimension(150, 300));
+        gpPanel.setMaximumSize(new Dimension(150, 300));
         gpTable.setEnabled(false);
     }
 
@@ -500,7 +497,7 @@ public class GUI extends JFrame
     {
     	if(myProcessor.useWatchdog)
     	{
-    		watchdogText.setText("Zeit bis Watchdog-Reset: " + Processor.wdt.getMillisLeft() + "ms");
+    		watchdogText.setText("Watchdog: " + Processor.wdt.getMillisLeft() + "ms");
     	}
     }
 

@@ -308,6 +308,7 @@ public class Befehle {
 			Processor.wdt.resetPrescaler();
 			Befehle.setTOFlag();
 			Befehle.clearPDFlag();
+			Processor.setSleeping(true);
 			break;
 
 		case "RLF":
