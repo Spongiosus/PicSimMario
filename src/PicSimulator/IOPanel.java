@@ -10,13 +10,11 @@ import javax.swing.JPanel;
 public class IOPanel extends JPanel
 {
 	JCheckBox rb0 = new JCheckBox("RB0");
-	Processor proc;
 	
 	
-	public IOPanel(Processor proc)
+	public IOPanel()
 	{
 		add(rb0);
-		this.proc = proc;
 		rb0.addActionListener(new ActionListener()
 		{
 			@Override

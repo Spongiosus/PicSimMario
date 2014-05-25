@@ -47,7 +47,6 @@ public class GUI extends JFrame
     private JButton             btnOpenProgram;
     private JPanel              buttonPanel;
 
-    private JPanel              programmPanel;
     private JTable              programmTable;
     private JScrollPane         scrollPane;
 
@@ -130,11 +129,7 @@ public class GUI extends JFrame
 
         JPanel upperPanel = new JPanel();
 
-
-        ioPanel = new IOPanel(myProcessor);
-        ioPanel.setPreferredSize(new Dimension(150, 175));
-        ioPanel.setMaximumSize(new Dimension(150, 175));
-        upperPanel.add(ioPanel);
+;
         
         gpPanel = new JPanel();
 
@@ -203,7 +198,13 @@ public class GUI extends JFrame
         contentPanel.add(upperPanel, BorderLayout.CENTER);
 
 
-        programmTable = new JTable(new DefaultTableModel(10, 2));
+        ioPanel = new IOPanel();
+        ioPanel.setPreferredSize(new Dimension(150, 175));
+        ioPanel.setMaximumSize(new Dimension(150, 175));
+        upperPanel.add(ioPanel);
+        
+
+        programmTable = new JTable(new DefaultTableModel(31, 2));
         scrollPane = new JScrollPane(programmTable);
 
         contentPanel.add(scrollPane, BorderLayout.EAST);
