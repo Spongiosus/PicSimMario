@@ -61,6 +61,7 @@ public class Processor implements Runnable
 
         if (useWatchdog)
             wdt.tick();
+		GUI.doRepaint();
 	}
 	
 	

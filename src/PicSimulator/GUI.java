@@ -33,6 +33,7 @@ import javax.swing.table.DefaultTableModel;
 public class GUI extends JFrame 
 {
     private static final int    gpTableColCount = 8;
+    private static GUI instance;
     
     
     Thread                      processorThread;
@@ -78,6 +79,7 @@ public class GUI extends JFrame
 
     public GUI(Processor proc)
     {
+    	instance = this;
         myProcessor = proc;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -307,6 +309,10 @@ public class GUI extends JFrame
         });
     }
 
+    public static void doRepaint()
+    {
+    	instance.repaintGUI();
+    }
     public void repaintGUI()
     {
         repaintGpTable();
@@ -394,7 +400,7 @@ public class GUI extends JFrame
                     if (oldVal.endsWith("B"))
                     {
                         target.setValueAt(oldVal.substring(0, oldVal.length() - 1), row, 0);
-                        Parser.breakpoint.remove(row);
+                        Parser.breakpoint.remove(new Integer(row));
                         
                     }
                     else
@@ -440,9 +446,7 @@ public class GUI extends JFrame
     	sfrTable.setValueAt("PORTA", 5, 0);
         sfrTable.setValueAt(toBinary(Register.PORTA), 5, 1);
     	sfrTable.setValueAt("PORTB", 6, 0);
-        sfrTable.setValueAt(toBinary(Register.PORTA), 6, 1);
-    	sfrTable.setValueAt("EEDATA", 7, 0);
-        sfrTable.setValueAt(toBinary(Register.PORTA), 7, 1);
+        sfrTable.setValueAt(toBinary(Register.PORTB), 6, 1);
     	sfrTable.setValueAt("EEDATA", 8, 0);
         sfrTable.setValueAt(toBinary(Register.EEDATA), 8, 1);
     	sfrTable.setValueAt("EEADR", 9, 0);
@@ -520,4 +524,5 @@ public class GUI extends JFrame
         return byteString;
     }
 
+    
 }
