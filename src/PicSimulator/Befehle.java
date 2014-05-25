@@ -286,6 +286,10 @@ public class Befehle {
 			break;
 
 		case "CLRWDT":
+			Processor.wdt.reset();
+			Processor.wdt.resetPrescaler();
+			Befehle.setPDFlag();
+			Befehle.setTOFlag();
 			break;
 
 		case "RETFIE":
@@ -300,6 +304,10 @@ public class Befehle {
 			break;
 
 		case "SLEEP":
+			Processor.wdt.reset();
+			Processor.wdt.resetPrescaler();
+			Befehle.setTOFlag();
+			Befehle.clearPDFlag();
 			break;
 
 		case "RLF":
