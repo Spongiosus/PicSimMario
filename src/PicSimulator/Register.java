@@ -30,6 +30,7 @@ public class Register {
 		TRISB = 0xFF;
 		EECON1 = 0;
 		EECON2 = 0;
+		stack.clear();
 	}
 
 	static void allOtherReset() {
@@ -239,7 +240,16 @@ public class Register {
 			GPR[address - 0x8C] = value;
 		}
 		if ((address == 0x00) || (address == 0x80))
-			INDF = value;
+		{
+			if(FSR == 0x00 || FSR == 0x80)
+			{
+				// verhindert Endlosschleife
+			}
+			else
+			{
+			Register.setValueAtAddress(FSR, value);
+			}
+		}
 		if (address == 0x01)
 			TMR0 = value;
 		if ((address == 0x02) || (address == 0x82))
