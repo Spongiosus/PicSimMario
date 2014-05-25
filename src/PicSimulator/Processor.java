@@ -13,6 +13,7 @@ public class Processor {
         int byte1 = 0;
         int byte2 = 0;  
         
+        Register.powerOnReset();
 
         while(Parser.befehlszeilen[Register.PCL] != null)
         {
