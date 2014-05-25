@@ -111,6 +111,8 @@ public class Befehle {
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
 				Register.W_REGISTER = (result & 0b011111111);
+
+			Processor.zyklen++;
 			break;
 
 		case "ANDWF":
@@ -129,6 +131,8 @@ public class Befehle {
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
 				Register.W_REGISTER = (result & 0b011111111);
+
+			Processor.zyklen++;
 			break;
 
 		case "CLRF":
@@ -136,12 +140,14 @@ public class Befehle {
 			Register.setValueAtAddress(addressf, 0);
 
 			setZeroFlag();
+			Processor.zyklen++;
 			break;
 
 		case "CLRW":
 			Register.W_REGISTER = 0;
 
 			setZeroFlag();
+			Processor.zyklen++;
 			break;
 
 		case "COMF":
@@ -160,6 +166,8 @@ public class Befehle {
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
 				Register.W_REGISTER = (result & 0b011111111);
+
+			Processor.zyklen++;
 			break;
 
 		case "DECF":
@@ -182,6 +190,8 @@ public class Befehle {
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
 				Register.W_REGISTER = (result & 0b011111111);
+
+			Processor.zyklen++;
 			break;
 
 		case "DECFSZ":
@@ -193,14 +203,18 @@ public class Befehle {
 			else
 				result = (valuef - 1);
 
-			if (result == 0)
+			if (result == 0) {
 				Register.PCL++;
+				Processor.zyklen++;
+			}
 
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
 			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
 				Register.W_REGISTER = (result & 0b011111111);
+
+			Processor.zyklen++;
 			break;
 
 		case "INCF":
@@ -221,6 +235,8 @@ public class Befehle {
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
 				Register.W_REGISTER = (result & 0b011111111);
+
+			Processor.zyklen++;
 			break;
 
 		case "INCFSZ":
@@ -231,14 +247,18 @@ public class Befehle {
 			else
 				result = (valuef + 1);
 
-			if (result == 0)
+			if (result == 0) {
 				Register.PCL++;
+				Processor.zyklen++;
+			}
 
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
 			if (isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
 				Register.W_REGISTER = (result & 0b011111111);
+
+			Processor.zyklen++;
 			break;
 
 		case "IORWF":
@@ -258,6 +278,8 @@ public class Befehle {
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
 				Register.W_REGISTER = (result & 0b011111111);
+
+			Processor.zyklen++;
 			break;
 
 		case "MOVF":
@@ -273,6 +295,8 @@ public class Befehle {
 				Register.setValueAtAddress(addressf, valuef);
 			else
 				Register.W_REGISTER = valuef;
+
+			Processor.zyklen++;
 			break;
 
 		case "MOVWF":
@@ -280,9 +304,12 @@ public class Befehle {
 			valuef = Register.getValueAtAddress(addressf);
 
 			Register.setValueAtAddress(addressf, Register.W_REGISTER);
+
+			Processor.zyklen++;
 			break;
 
 		case "NOP":
+			Processor.zyklen++;
 			break;
 
 		case "CLRWDT":
@@ -290,6 +317,8 @@ public class Befehle {
 			Processor.wdt.resetPrescaler();
 			Befehle.setPDFlag();
 			Befehle.setTOFlag();
+
+			Processor.zyklen++;
 			break;
 
 		case "RETFIE":
@@ -297,10 +326,16 @@ public class Befehle {
 
 			// Gerneral Interruption Enable
 			Register.setBitAtAddress(0x0B, 7);
+
+			Processor.zyklen++;
+			Processor.zyklen++;
 			break;
 
 		case "RETURN":
 			Register.PCL = Register.stack.pop();
+
+			Processor.zyklen++;
+			Processor.zyklen++;
 			break;
 
 		case "SLEEP":
@@ -308,6 +343,8 @@ public class Befehle {
 			Processor.wdt.resetPrescaler();
 			Befehle.setTOFlag();
 			Befehle.clearPDFlag();
+
+			Processor.zyklen++;
 			break;
 
 		case "RLF":
@@ -329,6 +366,8 @@ public class Befehle {
 				Register.setValueAtAddress(addressf, result & 0b011111111);
 			else
 				Register.W_REGISTER = result & 0b011111111;
+
+			Processor.zyklen++;
 			break;
 
 		case "RRF":
@@ -352,6 +391,8 @@ public class Befehle {
 				Register.setValueAtAddress(addressf, result & 0b011111111);
 			else
 				Register.W_REGISTER = result & 0b011111111;
+
+			Processor.zyklen++;
 			break;
 
 		case "SUBWF":
@@ -381,6 +422,8 @@ public class Befehle {
 				Register.setValueAtAddress(addressf, result & 0b011111111);
 			else
 				Register.W_REGISTER = result & 0b011111111;
+
+			Processor.zyklen++;
 			break;
 
 		case "SWAPF":
@@ -393,6 +436,8 @@ public class Befehle {
 				Register.setValueAtAddress(addressf, result & 0b011111111);
 			else
 				Register.W_REGISTER = result & 0b011111111;
+
+			Processor.zyklen++;
 			break;
 
 		case "XORWF":
@@ -411,6 +456,8 @@ public class Befehle {
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
 				Register.W_REGISTER = (result & 0b011111111);
+
+			Processor.zyklen++;
 			break;
 
 		// --------------- Bitbefehle -------------- //
@@ -421,6 +468,8 @@ public class Befehle {
 			// ergibt das zu löschende bit
 			Register.clearBitAtAddress(addressf, ((byte1 & 0b11) << 1)
 					+ ((byte2 & 0b10000000) >> 7));
+
+			Processor.zyklen++;
 			break;
 
 		case "BSF":
@@ -429,6 +478,8 @@ public class Befehle {
 			// ergibt das zu setzende bit
 			Register.setBitAtAddress(addressf, ((byte1 & 0b11) << 1)
 					+ ((byte2 & 0b10000000) >> 7));
+
+			Processor.zyklen++;
 			break;
 
 		case "BTFSC":
@@ -439,7 +490,10 @@ public class Befehle {
 				return;
 			} else {
 				Register.PCL++;
+				Processor.zyklen++;
 			}
+
+			Processor.zyklen++;
 			break;
 
 		case "BTFSS":
@@ -448,9 +502,12 @@ public class Befehle {
 			if (isBitSetAt(Register.getValueAtAddress(addressf),
 					((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7))) {
 				Register.PCL++;
+				Processor.zyklen++;
 			} else {
 				return;
 			}
+
+			Processor.zyklen++;
 			break;
 
 		// --------------- Literal/Sprungbefehle --------------- //
@@ -474,6 +531,8 @@ public class Befehle {
 				clearDigitCarryFlag();
 
 			Register.W_REGISTER = (result & 0b011111111);
+
+			Processor.zyklen++;
 			break;
 
 		case "ANDLW":
@@ -485,6 +544,8 @@ public class Befehle {
 				clearZeroFlag();
 
 			Register.W_REGISTER = (result & 0b011111111);
+
+			Processor.zyklen++;
 			break;
 
 		case "CALL":
@@ -492,11 +553,17 @@ public class Befehle {
 			// Nach jedem Befehl wird der PCL erhöht (bei CALL nicht notwendig)
 			Register.PCL = byte2 - 1;
 			Register.PCLATH = (byte1 & 0b111);
+
+			Processor.zyklen++;
+			Processor.zyklen++;
 			break;
 		case "GOTO":
 			// Nach jedem Befehl wird der PCL erhöht (bei GOTO nicht notwendig)
 			Register.PCL = byte2 - 1;
 			Register.PCLATH = (byte1 & 0b111);
+
+			Processor.zyklen++;
+			Processor.zyklen++;
 			break;
 		case "IORLW":
 			result = Register.W_REGISTER & byte2;
@@ -507,15 +574,22 @@ public class Befehle {
 				clearZeroFlag();
 
 			Register.W_REGISTER = (result & 0b011111111);
+
+			Processor.zyklen++;
 			break;
 
 		case "MOVLW":
 			Register.W_REGISTER = byte2;
+
+			Processor.zyklen++;
 			break;
 
 		case "RETLW":
 			Register.PCL = Register.stack.pop();
 			Register.W_REGISTER = byte2;
+
+			Processor.zyklen++;
+			Processor.zyklen++;
 			break;
 
 		case "SUBLW":
@@ -539,6 +613,8 @@ public class Befehle {
 				clearDigitCarryFlag();
 
 			Register.W_REGISTER = result & 0b011111111;
+
+			Processor.zyklen++;
 			break;
 
 		case "XORLW":
@@ -550,6 +626,8 @@ public class Befehle {
 				clearZeroFlag();
 
 			Register.W_REGISTER = (result & 0b011111111);
+
+			Processor.zyklen++;
 			break;
 
 		}
