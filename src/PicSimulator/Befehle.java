@@ -439,8 +439,13 @@ public class Befehle {
 			
 			
 		case "CALL":
+			Register.stack.push(Register.PCL + 1);
+			Register.PCL = byte2;
+			Register.PCLATH = (byte1 & 0b111);
 			break;
-		case "GOTO":							
+		case "GOTO":
+			Register.PCL = byte2;
+			Register.PCLATH = (byte1 & 0b111);
 			break;
 		case "IORLW":
 			result = Register.W_REGISTER & byte2;

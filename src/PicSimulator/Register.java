@@ -1,6 +1,23 @@
 package PicSimulator;
 
+import java.util.Stack;
+
 public class Register {
+	
+	static Stack<Integer> stack = new Stack <Integer>();
+	
+	public static void pushStack()
+	{
+		if(Register.stack.size() == 8)
+			return; //TODO
+		Register.stack.push(Register.PCL);
+	}
+	public static void popStack()
+	{
+		if(Register.stack.size() == 0)
+			return; //TODO
+		Register.PCL = Register.stack.pop();
+	}
 	
 	static void powerOnReset ()
 	{
