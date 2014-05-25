@@ -23,15 +23,15 @@ public class IOPanel extends JPanel
 			public void actionPerformed(ActionEvent arg0)
 			{
 				if(rb0.isSelected())
-					Register.PORTA |= 0x01;
+					Register.PORTB |= 0x01;
 				else
-					Register.PORTA &= 0xFE;
+					Register.PORTB &= 0xFE;
 			}
 		});
 	}
 
 	public void repaint(Processor myProcessor)
 	{
-		rb0.setSelected((Register.PORTA & 0x01) != 0);
+		rb0.setSelected((Register.PORTB & 0x01) != 0);
 	}
 }

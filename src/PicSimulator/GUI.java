@@ -500,7 +500,7 @@ public class GUI extends JFrame
     {
     	if(myProcessor.useWatchdog)
     	{
-    		watchdogText.setText("Zeit bis Watchdog-Reset: " + myProcessor.getWatchdog().getMillisLeft() + "ms");
+    		watchdogText.setText("Zeit bis Watchdog-Reset: " + Processor.wdt.getMillisLeft() + "ms");
     	}
     }
 
