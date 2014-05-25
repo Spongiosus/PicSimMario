@@ -58,7 +58,11 @@ public class Register {
 			return GPR[address - 0x8C];
 		}
 		if (address == 0x00)
-			return INDF;
+		{
+			if(FSR == 0x04 || FSR == 0x84)
+				return 0;
+			return Register.getValueAtAddress(FSR);
+		}
 		if (address == 0x01)
 			return TMR0;
 		if (address == 0x81)
