@@ -202,20 +202,11 @@ public class GUI extends JFrame
         
         contentPanel.add(upperPanel, BorderLayout.CENTER);
 
-        programmPanel = new JPanel();
-        programmPanel.setLayout(new BorderLayout());
 
-
-
-
-        
         programmTable = new JTable(new DefaultTableModel(10, 2));
         scrollPane = new JScrollPane(programmTable);
-        programmPanel.setPreferredSize(new Dimension(contentPanel.getWidth(), 200));
-        programmPanel.setMinimumSize(new Dimension(contentPanel.getWidth(), 200));
 
-        programmPanel.add(scrollPane, BorderLayout.CENTER);
-        contentPanel.add(programmPanel, BorderLayout.SOUTH);
+        contentPanel.add(scrollPane, BorderLayout.EAST);
     }
 
     private void resetProcessor()

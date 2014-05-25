@@ -7,6 +7,7 @@ public class Processor implements Runnable
 	public static final int PWR_ON = 0;
 	public static final int SLEEP = 1;
 	public static final int WDT = 2;
+	public static final int ALL_RESET = 3;
 
 	static Watchdog wdt;
 	static double frequency = 4.0; // in MHz
@@ -93,7 +94,6 @@ public class Processor implements Runnable
 		{
 		case PWR_ON:
 			Register.powerOnReset();
-			Parser.reset();
 			Processor.setSleeping(false);
 			break;
 
