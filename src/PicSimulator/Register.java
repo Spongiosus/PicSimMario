@@ -33,15 +33,26 @@ public class Register {
 		EECON1 = 0;
 		EECON2 = 0;		
 	}
-	// Other Resets TODO
 		
-	static void wakeUpReset()
+	static void allOtherReset()
 	{
-		
+		PCL = 0;
+		STATUS = STATUS & 0b00011111;
+		PCLATH = 0;
+		INTCON = INTCON & 0b00000001;
+		OPTION_REG = 0xFF;
+		TRISA = 0xFF;
+		TRISB = 0xFF;
+		EECON1 = 0;
+		PCLATH = 0;	
 	}
 	
 	static int getValueAtAddress(int address)
 	{
+		// Bankabfrage
+		if(Befehle.isBitSetAt(Register.STATUS, 5))
+			address = address + 0x80;
+		
 		if((address >= 0x0C) && (address <= 0x2F))
 		{
 		// GPR
@@ -102,6 +113,9 @@ public class Register {
 	
 	static void setBitAtAddress(int address, int bit)
 	{		
+		// Bankabfrage
+		if(Befehle.isBitSetAt(Register.STATUS, 5))
+			address = address + 0x80;
 		
 		if((address >= 0x0C) && (address <= 0x2F))
 		{
@@ -175,6 +189,9 @@ public class Register {
 			maske = 0b01111111;
 			break;
 		}
+		// Bankabfrage
+		if(Befehle.isBitSetAt(Register.STATUS, 5))
+			address = address + 0x80;
 		
 		if((address >= 0x0C) && (address <= 0x2F))
 		{
@@ -220,6 +237,10 @@ public class Register {
 	
 	static void setValueAtAddress(int address, int value)
 	{
+		// Bankabfrage 
+		if(Befehle.isBitSetAt(Register.STATUS, 5))
+			address = address + 0x80;
+		
 		if((address >= 0x0C) && (address <= 0x2F))
 		{
 		// GPR

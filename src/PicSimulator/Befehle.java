@@ -192,7 +192,7 @@ public class Befehle {
 			if(valuef == 0)
 				result = 0xFF;
 			else
-				result = valuef--;
+				result = (valuef - 1);
 			
 			// Z prüfen
 			if(result == 0)
@@ -213,7 +213,7 @@ public class Befehle {
 			if(valuef == 0)
 				result = 0xFF;
 			else
-				result = valuef--;		
+				result = (valuef - 1);		
 			
 			if(result == 0)
 				Register.PCL++;
@@ -232,7 +232,7 @@ public class Befehle {
 			if(valuef == 0xFF)
 				result = 0;
 			else
-				result = valuef++;
+				result = (valuef + 1);
 			// Z prüfen
 			if(result == 0)
 				setZeroFlag();
@@ -251,7 +251,7 @@ public class Befehle {
 			if(valuef == 0xFF)
 				result = 0;
 			else
-				result = valuef++;
+				result = (valuef + 1);
 
 			if(result == 0)
 				Register.PCL++;
