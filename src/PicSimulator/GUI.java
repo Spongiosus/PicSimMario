@@ -386,15 +386,17 @@ public class GUI extends JFrame
 
                     String oldVal = (String) target.getValueAt(row, 0);
 
-                    if (oldVal.endsWith("B"))
+                    String breakModifier = " <Break>";
+                    
+                    if (oldVal.endsWith(breakModifier))
                     {
-                        target.setValueAt(oldVal.substring(0, oldVal.length() - 1), row, 0);
+                        target.setValueAt(oldVal.substring(0, oldVal.length() - breakModifier.length()), row, 0);
                         Parser.breakpoint.remove(new Integer(row));
                         
                     }
                     else
                     {
-                        target.setValueAt(oldVal + "B", row, 0);
+                        target.setValueAt(oldVal + breakModifier, row, 0);
                         Parser.breakpoint.add(row);
                     }
                 }
