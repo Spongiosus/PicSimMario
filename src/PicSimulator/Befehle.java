@@ -132,7 +132,7 @@ public class Befehle {
 			if(isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);			
+				Register.W_REGISTER = (result & 0b011111111);	
 			break;
 			
 			
@@ -149,7 +149,7 @@ public class Befehle {
 			if(isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);		
+				Register.W_REGISTER = (result & 0b011111111);	
 			break;
 			
 			
@@ -181,7 +181,7 @@ public class Befehle {
 			if(isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);			
+				Register.W_REGISTER = (result & 0b011111111);	
 			break;
 			
 			
@@ -202,7 +202,7 @@ public class Befehle {
 			if(isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);			
+				Register.W_REGISTER = (result & 0b011111111);	
 			break;
 			
 			
@@ -225,7 +225,7 @@ public class Befehle {
 			if(isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);			
+				Register.W_REGISTER = (result & 0b011111111);	
 			break;
 			
 			
@@ -249,7 +249,7 @@ public class Befehle {
 			if(isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, (result & 0b011111111));
 			else
-				Register.W_REGISTER = (result & 0b011111111);		
+				Register.W_REGISTER = (result & 0b011111111);	
 			break;
 			
 			
@@ -486,7 +486,8 @@ public class Befehle {
 			
 
 		}
-			
+		Register.PCL++;
+		
 	}
 
 }
