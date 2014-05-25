@@ -30,15 +30,15 @@ public class Decoder {
 			return "MOVF";
 		case 0b00000000: // MOVWF oder NOP oder CLRWDT oder RETFIE oder RETURN
 							// oder SLEEP
-			if ((byte2 & 0b10000000) != 0)
+			if (Befehle.isBitSetAt(byte2, 7))
 				return "MOVWF";
-			if ((byte2 & 0b01100100) == 255)
+			if (byte2 == 0b01100100)
 				return "CLRWDT";
-			if ((byte2 & 0b00001001) == 255)
+			if (byte2 == 0b00001001)
 				return "RETFIE";
-			if ((byte2 & 0b00001000) == 255)
+			if (byte2 == 0b00001000)
 				return "RETURN";
-			if ((byte2 & 0b01100011) == 255)
+			if (byte2 == 0b01100011)
 				return "SLEEP";
 			return "NOP";
 		case 0b00001101: // RLF
