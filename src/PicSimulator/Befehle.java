@@ -52,14 +52,6 @@ public class Befehle {
 	{
 		Register.setBitAtAddress(3, 4);
 	}
-	public static void setRP0Flag()
-	{
-		Register.setBitAtAddress(3, 5);
-	}
-	public static void setRP1Flag()
-	{
-		Register.setBitAtAddress(3, 6);
-	}
 	public static void setIRPFlag()
 	{
 		Register.setBitAtAddress(3, 7);
@@ -85,14 +77,6 @@ public class Befehle {
 	public static void clearTOFlag()
 	{
 		Register.clearBitAtAddress(3, 4);
-	}
-	public static void clearRP0Flag()
-	{
-		Register.clearBitAtAddress(3, 5);
-	}
-	public static void clearRP1Flag()
-	{
-		Register.clearBitAtAddress(3, 6);
 	}
 	public static void clearIRPFlag()
 	{
@@ -121,12 +105,19 @@ public class Befehle {
 			// Auf C, DC, Z prüfen
 			if(result == 0)
 				setZeroFlag();
+			else
+				clearZeroFlag();
+			
 			if(isBitSetAt(result, 8))
 				setCarryFlag();
+			else
+				clearCarryFlag();
 			
 			// DC
 			if((valuef & 0b00001111) + (Register.W_REGISTER & 0b00001111) > 15)
 				setDigitCarryFlag();
+			else
+				clearDigitCarryFlag();
 			
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
 			if(isBitSetAt(byte2, 7))
@@ -144,6 +135,8 @@ public class Befehle {
 			// Auf Z prüfen
 			if(result == 0)
 				setZeroFlag();
+			else
+				clearZeroFlag();
 			
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
 			if(isBitSetAt(byte2, 7))
@@ -176,6 +169,8 @@ public class Befehle {
 			// Auf Z prüfen
 			if(result == 0)
 				setZeroFlag();
+			else
+				clearZeroFlag();
 			
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
 			if(isBitSetAt(byte2, 7))
@@ -197,6 +192,8 @@ public class Befehle {
 			// Z prüfen
 			if(result == 0)
 				setZeroFlag();
+			else
+				clearZeroFlag();
 			
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
 			if(isBitSetAt(byte2, 7))
@@ -236,6 +233,8 @@ public class Befehle {
 			// Z prüfen
 			if(result == 0)
 				setZeroFlag();
+			else
+				clearZeroFlag();
 			
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
 			if(isBitSetAt(byte2, 7))
@@ -290,6 +289,8 @@ public class Befehle {
 			
 			if(valuef == 0)
 				setZeroFlag();
+			else
+				clearZeroFlag();
 						
 			if(isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, valuef);
@@ -339,8 +340,12 @@ public class Befehle {
 			
 			if(isBitSetAt(Register.STATUS, 0))
 				result++;
+			
+			// Check Carry Flag
 			if(isBitSetAt(result, 8))
 				setCarryFlag();
+			else
+				clearCarryFlag();
 						
 			if(isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, result & 0b011111111);
@@ -360,9 +365,11 @@ public class Befehle {
 			result = valuef >> 1;
 			
 			if(isBitSetAt(Register.STATUS, 0))
-				result = result | 0x80;			
+				result = result | 0x80;
 			if(setFlag)
 				setCarryFlag();
+			else
+				clearCarryFlag();
 						
 			if(isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, result & 0b011111111);
@@ -380,12 +387,18 @@ public class Befehle {
 			// Auf C, DC, Z prüfen
 			if((result & 0b011111111) == 0)
 				setZeroFlag();
+			else
+				clearZeroFlag();
 			if(isBitSetAt(result, 8))
 				setCarryFlag();
+			else
+				clearCarryFlag();
 						
 			// DC
 			if((valuef & 0b00001111) + ( ~ (Register.W_REGISTER & 0b00001111) + 1) > 15)
 				setDigitCarryFlag();
+			else
+				clearDigitCarryFlag();
 			
 			if(isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, result & 0b011111111);
@@ -398,7 +411,7 @@ public class Befehle {
 			addressf = (byte2 & 0b01111111);
 			valuef = Register.getValueAtAddress(addressf);
 			
-			result = ((valuef & 0b1111) << 4) + (valuef & 0b11110000) >> 4;
+			result = ((valuef & 0b1111) << 4) + ((valuef & 0b11110000) >> 4);
 			
 			if(isBitSetAt(byte2, 7))
 				Register.setValueAtAddress(addressf, result & 0b011111111);
@@ -415,6 +428,8 @@ public class Befehle {
 			// Auf Z prüfen
 			if(result == 0)
 				setZeroFlag();
+			else
+				clearZeroFlag();
 			
 			// Wenn bit 7 in byte 2 gesetzt ist, stored in f, else in W
 			if(isBitSetAt(byte2, 7))
@@ -475,12 +490,18 @@ public class Befehle {
 			// Auf C, DC, Z prüfen
 			if(result == 0)
 				setZeroFlag();
+			else
+				clearZeroFlag();
 			if(isBitSetAt(result, 8))
 				setCarryFlag();
+			else
+				clearCarryFlag();
 			
 			//DC
 			if((byte2 & 0b00001111) + (Register.W_REGISTER & 0b00001111) > 15)
 				setDigitCarryFlag();
+			else
+				clearDigitCarryFlag();
 
 				Register.W_REGISTER = (result & 0b011111111);			
 			break;
@@ -490,7 +511,9 @@ public class Befehle {
 			result = Register.W_REGISTER & byte2;
 			// Auf Z prüfen
 			if(result == 0)
-				setZeroFlag(); //TODO
+				setZeroFlag();
+			else
+				clearZeroFlag();
 
 			Register.W_REGISTER = (result & 0b011111111);			
 			break;
@@ -509,8 +532,11 @@ public class Befehle {
 			break;
 		case "IORLW":
 			result = Register.W_REGISTER & byte2;
-
-			setZeroFlag(); // TODO
+			
+			if(result == 0)
+				setZeroFlag();
+			else
+				clearZeroFlag();
 
 			Register.W_REGISTER = (result & 0b011111111);			
 			break;			
@@ -533,12 +559,18 @@ public class Befehle {
 			// Auf C, DC, Z prüfen
 			if((result & 0b011111111) == 0)
 				setZeroFlag();
+			else
+				clearZeroFlag();
 			if(isBitSetAt(result, 8))
 				setCarryFlag();
+			else
+				clearCarryFlag();
 						
 			// DC
 			if((valuef & 0b00001111) + ( ~ (Register.W_REGISTER & 0b00001111) + 1) > 15)
 				setDigitCarryFlag();
+			else
+				clearDigitCarryFlag();
 			
 			Register.W_REGISTER = result & 0b011111111;
 			break;
@@ -549,6 +581,8 @@ public class Befehle {
 			// Auf Z prüfen
 			if(result == 0)
 				setZeroFlag();
+			else
+				clearZeroFlag();
 
 			Register.W_REGISTER = (result & 0b011111111);			
 			break;
