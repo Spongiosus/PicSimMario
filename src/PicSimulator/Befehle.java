@@ -416,8 +416,7 @@ public class Befehle {
 				clearCarryFlag();
 
 			// DC
-			if ((valuef & 0b00001111)
-					+ (~(Register.W_REGISTER & 0b00001111) + 1) > 15)
+			if ((((valuef & 0b00001111) + ((~(Register.W_REGISTER & 0b00001111) + 1) & 0b00001111)) & 0b00010000) != 0)
 				setDigitCarryFlag();
 			else
 				clearDigitCarryFlag();
@@ -610,10 +609,9 @@ public class Befehle {
 				setCarryFlag();
 			else
 				clearCarryFlag();
-
+			
 			// DC
-			if ((valuef & 0b00001111)
-					+ (~(Register.W_REGISTER & 0b00001111) + 1) > 15)
+			if ((((byte2 & 0b00001111) + ((~(Register.W_REGISTER & 0b00001111) + 1) & 0b00001111)) & 0b00010000) != 0)
 				setDigitCarryFlag();
 			else
 				clearDigitCarryFlag();
