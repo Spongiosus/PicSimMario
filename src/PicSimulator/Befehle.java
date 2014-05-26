@@ -90,7 +90,7 @@ public class Befehle {
 
 			result = Register.W_REGISTER + valuef;
 			// Auf C, DC, Z prüfen
-			if (result == 0)
+			if ((result & 0b011111111) == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
@@ -519,7 +519,7 @@ public class Befehle {
 		case "ADDLW":
 			result = Register.W_REGISTER + byte2;
 			// Auf C, DC, Z prüfen
-			if (result == 0)
+			if ((result & 0b011111111) == 0)
 				setZeroFlag();
 			else
 				clearZeroFlag();
