@@ -22,7 +22,7 @@ public class Befehle {
 		case 7:
 			return ((myByte & 0b10000000) != 0);
 		case 8:
-			return ((myByte & 0b10000000) != 0);
+			return ((myByte & 0b100000000) != 0);
 		default:
 			return false;
 		}
