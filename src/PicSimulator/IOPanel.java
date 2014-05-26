@@ -32,7 +32,7 @@ public class IOPanel extends JPanel
 			@Override
 			public void actionPerformed(ActionEvent arg0)
 			{
-				if(rb0.isSelected())
+				if(ra4.isSelected())
 					Register.PORTA |= 0x10;
 				else
 					Register.PORTA &= 0xEF;

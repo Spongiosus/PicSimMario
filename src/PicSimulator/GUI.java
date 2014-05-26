@@ -81,7 +81,7 @@ public class GUI extends JFrame
         myProcessor = proc;
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 1100, 600);
+        setBounds(100, 100, 900, 900);
 
         mainPanel = new JPanel();
         mainPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
