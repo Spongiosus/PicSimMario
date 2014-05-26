@@ -488,25 +488,24 @@ public class Befehle {
 		case "BTFSC":
 			addressf = (byte2 & 0b01111111);
 
+			Register.PCL++;
+			Processor.zyklen++;
+			
 			if (isBitSetAt(Register.getValueAtAddress(addressf),
 					((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7))) {
-				Processor.zyklen++;
 				return;
-			} else {
-				Register.PCL++;
-				Processor.zyklen++;
 			}
 			break;
 
 		case "BTFSS":
 			addressf = (byte2 & 0b01111111);
 
+			Register.PCL++;
+			Processor.zyklen++;
+			
 			if (isBitSetAt(Register.getValueAtAddress(addressf),
-					((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7))) {
-				Register.PCL++;
-				Processor.zyklen++;
+					((byte1 & 0b11) << 1) + ((byte2 & 0b10000000) >> 7))) {	
 			} else {
-				Processor.zyklen++;
 				return;
 			}
 

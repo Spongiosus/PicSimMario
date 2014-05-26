@@ -13,6 +13,8 @@ public class Processor implements Runnable
 	static double frequency = 4.0; // in MHz
 	static int zyklen = 0;
 
+	int prescaledJumpedTicks = 0;
+	int prevRa4 = 0;
 	boolean isSleeping = false;
 	boolean isRunning = false;
 	boolean useWatchdog = true;
@@ -65,11 +67,75 @@ public class Processor implements Runnable
 
 		Befehle.fuehreBefehlAus(aktuellerBefehl, byte1, byte2);
 
-		if (useWatchdog)
-			wdt.tick();
+		onTick();
 		GUI.doRepaint();
 	}
+	
+	private void onTick()
+	{
+		if (useWatchdog)
+			wdt.tick();
+		
+		int options = Register.OPTION_REG;
+		if ((options & 0b100000) == 0 || hasRa4Transitioned())
+		{
+			// tmr0 increments on tick or a RA4 pin transition occurred
+			if ((options & 0b1000) == 0)
+			{
+				// prescaler assigned to tmr0
+				int prescaler = (int) Math.pow(2, options & 0b111);
+				if (prescaledJumpedTicks == prescaler + 1)
+				{
+					prescaledJumpedTicks = 0;
+					incrementTmr0();
+				}
+				else
+				{
+					prescaledJumpedTicks++;
+				}
+			}
+			else
+			{
+				incrementTmr0();
+			}
+		}
+	}
 
+	private boolean hasRa4Transitioned()
+	{
+		int ra4 = Register.PORTA & 0b10000;
+		
+		if (ra4 == prevRa4)
+			// no change
+			return false;
+		
+		prevRa4 = ra4;
+		
+		if ((Register.OPTION_REG & 0b10000) != 0)
+		{
+			// high-to-low
+			return ra4 == 0;
+		}
+		else
+		{
+			// low-to-high
+			return ra4 != 0;
+		}
+	}
+	
+	private void incrementTmr0()
+	{
+		if (Register.TMR0 == 0xFF)
+		{
+			//TODO: interrupt
+			Register.TMR0 = 0;
+		}
+		else
+		{
+			Register.TMR0++;
+		}
+	}
+	
 	public boolean isSleeping()
 	{
 		return isSleeping;
