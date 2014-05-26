@@ -570,7 +570,7 @@ public class Befehle {
 			Processor.zyklen++;
 			break;
 		case "IORLW":
-			result = Register.W_REGISTER & byte2;
+			result = Register.W_REGISTER | byte2;
 
 			if (result == 0)
 				setZeroFlag();
