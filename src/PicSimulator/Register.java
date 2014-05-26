@@ -65,9 +65,9 @@ public class Register {
 			// GPR
 			return GPR[address - 0x8C];
 		}
-		if (address == 0x00)
+		if (address == 0x00 || address == 0x80)
 		{
-			if(FSR == 0x04 || FSR == 0x84)
+			if(FSR == 0x00 || FSR == 0x80)
 				return 0;
 			return Register.getValueAtAddress(FSR);
 		}
@@ -92,8 +92,6 @@ public class Register {
 		// Unbelegte Register
 		if ((address == 0x07) || (address == 0x87))
 			return 0;
-		if (address == 0x86)
-			return TRISB;
 		if (address == 0x08)
 			return EEDATA;
 		if (address == 0x88)
@@ -130,9 +128,14 @@ public class Register {
 			GPR[address - 0x8C] = GPR[address - 0x8C] | (1 << bit);
 		}
 		if ((address == 0x00) || (address == 0x80))
-			INDF = INDF | (1 << bit);
+			if(FSR == 0x00 || FSR == 0x80)
+				return;
+			else
+				setBitAtAddress(FSR, bit);
 		if (address == 0x01)
 			TMR0 = TMR0 | (1 << bit);
+		if (address == 0x81)
+			OPTION_REG = OPTION_REG | (1 << bit);
 		if ((address == 0x02) || (address == 0x82))
 			PCL = PCL | (1 << bit);
 		if ((address == 0x03) || (address == 0x83))
@@ -143,6 +146,10 @@ public class Register {
 			TRISA = TRISA | (1 << bit);
 		if (address == 0x86)
 			TRISB = TRISB | (1 << bit);
+		if (address == 0x05)
+			PORTA = PORTA | (1 << bit);
+		if (address == 0x06)
+			PORTB = PORTB | (1 << bit);
 
 		// Unimplemented
 		if ((address == 0x07) || (address == 0x87))
@@ -151,8 +158,14 @@ public class Register {
 			EEDATA = EEDATA | (1 << bit);
 		if (address == 0x09)
 			EEADR = EEADR | (1 << bit);
+		if (address == 0x88)
+			EECON1 = EECON1 | (1 << bit);
 		if (address == 0x89)
 			EECON2 = EECON2 | (1 << bit);
+		if ((address == 0x0A) || (address == 0x8A))
+			PCLATH = PCLATH | (1 << bit);
+		if ((address == 0x0B) || (address == 0x8B))
+			INTCON = INTCON | (1 << bit);
 
 		// Unimplemented
 		if ((address <= 0x30) || (address >= 0x7F))
@@ -202,9 +215,12 @@ public class Register {
 			GPR[address - 0x8C] = GPR[address - 0x8C] & maske;
 		}
 		if ((address == 0x00) || (address == 0x80))
-			INDF = INDF & maske;
+			setValueAtAddress(FSR, getValueAtAddress(FSR) & maske);
+
 		if (address == 0x01)
 			TMR0 = TMR0 & maske;
+		if (address == 0x81)
+			OPTION_REG = OPTION_REG & maske;
 		if ((address == 0x02) || (address == 0x82))
 			PCL = PCL & maske;
 		if ((address == 0x03) || (address == 0x83))
@@ -215,6 +231,10 @@ public class Register {
 			TRISA = TRISA & maske;
 		if (address == 0x86)
 			TRISB = TRISB & maske;
+		if (address == 0x05)
+			PORTA = PORTA & maske;
+		if (address == 0x06)
+			PORTB = PORTB & maske;
 
 		// Unimplemented
 		if ((address == 0x07) || (address == 0x87))
@@ -223,8 +243,14 @@ public class Register {
 			EEDATA = EEDATA & maske;
 		if (address == 0x09)
 			EEADR = EEADR & maske;
+		if (address == 0x88)
+			EECON1 = EECON1 & maske;
 		if (address == 0x89)
 			EECON2 = EECON2 & maske;
+		if ((address == 0x0A) || (address == 0x8A))
+			PCLATH = PCLATH & maske;
+		if ((address == 0x0B) || (address == 0x8B))
+			INTCON = INTCON & maske;
 
 		// Unimplemented
 		if ((address <= 0x30) || (address >= 0x7F))
@@ -254,11 +280,13 @@ public class Register {
 			}
 			else
 			{
-			Register.setValueAtAddress(FSR, value);
+				Register.setValueAtAddress(FSR, value);
 			}
 		}
 		if (address == 0x01)
 			TMR0 = value;
+		if (address == 0x81)
+			OPTION_REG = value;
 		if ((address == 0x02) || (address == 0x82))
 			PCL = value;
 		if ((address == 0x03) || (address == 0x83))
@@ -269,6 +297,10 @@ public class Register {
 			TRISA = value;
 		if (address == 0x86)
 			TRISB = value;
+		if (address == 0x05)
+			PORTA = value;
+		if (address == 0x06)
+			PORTB = value;
 
 		// Unimplemented
 		if ((address == 0x07) || (address == 0x87))
@@ -277,8 +309,14 @@ public class Register {
 			EEDATA = value;
 		if (address == 0x09)
 			EEADR = value;
+		if (address == 0x88)
+			EECON1 = value;
 		if (address == 0x89)
 			EECON2 = value;
+		if ((address == 0x0A) || (address == 0x8A))
+			PCLATH = value;
+		if ((address == 0x0B) || (address == 0x8B))
+			INTCON = value;
 
 		// Unimplemented
 		if ((address <= 0x30) || (address >= 0x7F))
