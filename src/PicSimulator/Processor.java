@@ -84,8 +84,8 @@ public class Processor implements Runnable
 			if ((options & 0b1000) == 0)
 			{
 				// prescaler assigned to tmr0
-				int prescaler = (int) Math.pow(2, options & 0b111);
-				if (prescaledJumpedTicks == prescaler + 1)
+				int prescaler = (int) Math.pow(2, (options & 0b111) + 1);
+				if (prescaledJumpedTicks >= prescaler + 1)
 				{
 					prescaledJumpedTicks = 0;
 					incrementTmr0();
