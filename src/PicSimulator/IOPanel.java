@@ -42,7 +42,7 @@ public class IOPanel extends JPanel
 
 	public void repaint(Processor myProcessor)
 	{
-		rb0.setSelected((Register.PORTB & 0x01) != 0);
-		ra4.setSelected((Register.PORTA & 0x10) != 0);
+		//rb0.setSelected((Register.PORTB & 0x01) != 0);
+		//ra4.setSelected((Register.PORTA & 0x10) != 0);
 	}
 }

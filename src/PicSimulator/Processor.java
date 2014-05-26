@@ -15,6 +15,7 @@ public class Processor implements Runnable
 
 	int prescaledJumpedTicks = 0;
 	int prevRa4 = 0;
+	
 	boolean isSleeping = false;
 	boolean isRunning = false;
 	boolean useWatchdog = true;
