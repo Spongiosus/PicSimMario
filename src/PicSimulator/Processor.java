@@ -61,7 +61,7 @@ public class Processor implements Runnable
 		int byte2 = Integer.parseInt(Parser.befehlszeilen[Register.PCL].substring(7, 9), 16);
 
 		String aktuellerBefehl = Decoder.erkenneBefehl(byte1, byte2);
-		System.out.printf(aktuellerBefehl + "		Arg1:	0x%x	Arg2:	0x%x\n", byte1, byte2);
+		//System.out.printf(aktuellerBefehl + "		Arg1:	0x%x	Arg2:	0x%x\n", byte1, byte2);
 
 		Befehle.fuehreBefehlAus(aktuellerBefehl, byte1, byte2);
 
@@ -99,6 +99,7 @@ public class Processor implements Runnable
 
 		case WDT:
 			Register.allOtherReset();
+			Processor.zyklen = 0;
 			Register.STATUS &= 0x7;
 			Register.setBitAtAddress(3, 3);
 			Register.clearBitAtAddress(3, 4);

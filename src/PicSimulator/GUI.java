@@ -284,7 +284,7 @@ public class GUI extends JFrame
             {
             	if (Desktop.isDesktopSupported()) {
             	    try {
-            	        File myFile = new File("Dokumentation.pdf");
+            	        File myFile = new File("C:/Dokumentation.pdf");
             	        Desktop.getDesktop().open(myFile);
             	    } catch (Exception ex) {
             	        // no application registered for PDFs
